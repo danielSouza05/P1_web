@@ -8,12 +8,14 @@ const connection = mysql.createConnection
     database: 'Lojinha'
 });
 
-connection.query('SELECT 1 + 1 AS solution', (err, results) => {
-    if (err) {
+connection.query('SELECT 1 + 1 AS solution', (err, results) => 
+  {
+    if (err) 
+    {
       console.error('Erro na consulta: ', err);
       return;
     }
-    console.log('Resultado da consulta: ', results);  // Exibe o resultado da consulta
+    console.log('Resultado da consulta: ', results);  // exibe o resultado da consulta
   });
   
 module.exports = connection;

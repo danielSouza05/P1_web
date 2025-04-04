@@ -2,19 +2,11 @@ const express = require('express');
 const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 
-// Rota para criar um novo usuário
-router.post('/usuarios', usuarioController.criarUsuario);
 
-// Rota para listar todos os usuários
-router.get('/usuarios', usuarioController.listarUsuarios);
-
-// Rota para buscar um usuário específico pelo ID
-router.get('/usuarios/:id', usuarioController.buscarUsuarioPorId);
-
-// Rota para atualizar os dados de um usuário específico
-router.put('/usuarios/:id', usuarioController.atualizarUsuario);
-
-// Rota para excluir um usuário específico pelo ID
-router.delete('/usuarios/:id', usuarioController.excluirUsuario);
+router.post('/usuarios', usuarioController.criarUsuario); // rota pra criar um novo usuario
+router.get('/usuarios', usuarioController.listarUsuarios); // rota pra listar todos os usuarios
+router.get('/usuarios/:id', usuarioController.buscarUsuarioPorId);// rota pra buscar um usuario específico pelo ID
+router.put('/usuarios/:id', usuarioController.atualizarUsuario); // rota pra atualizar os dados de um usuario especifico
+router.delete('/usuarios/:id', usuarioController.excluirUsuario); // rota para excluir um usuario especifico pelo id
 
 module.exports = router;

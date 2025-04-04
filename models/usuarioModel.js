@@ -1,10 +1,13 @@
-const db = require('./database');  // Conexão com o banco de dados
+const db = require('./database');  // conexão com o banco de dados
 
-// Função para criar um novo usuário
-function criarUsuario(usuario, callback) {
+// função pra criar um novo usuario
+function criarUsuario(usuario, callback) 
+{
   const query = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
-  db.query(query, [usuario.nome, usuario.email, usuario.senha], (err, results) => {
-    if (err) {
+  db.query(query, [usuario.nome, usuario.email, usuario.senha], (err, results) => 
+  {
+    if (err) 
+    {
       console.error('Erro ao criar o usuário:', err);
       return callback(err, null);
     }
@@ -12,51 +15,64 @@ function criarUsuario(usuario, callback) {
   });
 }
 
-// Função para listar todos os usuários
-function listarUsuarios(callback) {
+// fnção pra listar todos os usuarios
+function listarUsuarios(callback) 
+{
   const query = 'SELECT * FROM usuarios';
-  db.query(query, (err, results) => {
-    if (err) {
+  db.query(query, (err, results) => 
+  {
+    if (err) 
+    {
       return callback(err, null);
     }
     callback(null, results);
   });
 }
 
-// Função para buscar um usuário por ID
-function buscarUsuarioPorId(id, callback) {
+// funçao pra buscar um usuario por id
+function buscarUsuarioPorId(id, callback) 
+{
   const query = 'SELECT * FROM usuarios WHERE id = ?';
-  db.query(query, [id], (err, results) => {
-    if (err) {
+  db.query(query, [id], (err, results) => 
+  {
+    if (err) 
+    {
       return callback(err, null);
     }
     callback(null, results[0]);
   });
 }
 
-// Função para atualizar um usuário
-function atualizarUsuario(id, usuario, callback) {
+// função pra atualizar um usuario
+function atualizarUsuario(id, usuario, callback) 
+{
   const query = 'UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?';
-  db.query(query, [usuario.nome, usuario.email, usuario.senha, id], (err, results) => {
-    if (err) {
+  db.query(query, [usuario.nome, usuario.email, usuario.senha, id], (err, results) => 
+  {
+    if (err) 
+    {
       return callback(err, null);
     }
     callback(null, { id, ...usuario });
   });
 }
 
-// Função para excluir um usuário
-function excluirUsuario(id, callback) {
+// funçao pra excluir um usuario
+function excluirUsuario(id, callback) 
+{
   const query = 'DELETE FROM usuarios WHERE id = ?';
-  db.query(query, [id], (err, results) => {
-    if (err) {
+  db.query(query, [id], (err, results) => 
+  {
+    if (err) 
+    {
       return callback(err, null);
     }
     callback(null, results);
   });
 }
 
-module.exports = {
+module.exports = 
+{
   criarUsuario,
   listarUsuarios,
   buscarUsuarioPorId,

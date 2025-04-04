@@ -19,20 +19,23 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Os produtos serão listados aqui via JavaScript -->
+            <!--os produtos serao listados aqui via js -->
         </tbody>
     </table>
 
     <script>
-        // Função para listar os produtos
-        function listarProdutos() {
+        // funçao pra listar os produtos
+        function listarProdutos() 
+        {
             fetch("/api/produtos")
                 .then(response => response.json())
-                .then(produtos => {
+                .then(produtos => 
+                {
                     const tabelaProdutos = document.getElementById("tabelaProdutos").getElementsByTagName('tbody')[0];
-                    tabelaProdutos.innerHTML = ''; // Limpa a tabela antes de adicionar os produtos
+                    tabelaProdutos.innerHTML = ''; // limpa a tabela antes de adicionar os produtos
 
-                    produtos.forEach(produto => {
+                    produtos.forEach(produto => 
+                    {
                         let row = tabelaProdutos.insertRow();
                         row.innerHTML = `
                             <td>${produto.id}</td>
@@ -46,12 +49,13 @@
                         `;
                     });
                 })
-                .catch(error => {
+                .catch(error => 
+                {
                     console.error("Erro ao listar produtos:", error);
                 });
         }
 
-        // Função para editar um produto
+        // função para editar um produto
         function editarProduto(id) {
             const novoNome = prompt("Digite o novo nome do produto:");
             const novoPreco = parseFloat(prompt("Digite o novo preço do produto:"));
@@ -69,32 +73,37 @@
             .then(response => response.json())
             .then(data => {
                 alert("Produto atualizado com sucesso!");
-                listarProdutos();  // Recarrega a lista de produtos
+                listarProdutos();  // recarrega a lista de produtos
             })
             .catch(error => {
                 console.error("Erro ao editar produto:", error);
             });
         }
 
-        // Função para excluir um produto
-        function excluirProduto(id) {
+        // funçao pra excluir um produto
+        function excluirProduto(id) 
+        {
             const confirmacao = confirm("Tem certeza que deseja excluir este produto?");
-            if (confirmacao) {
-                fetch(`/api/produtos/${id}`, {
+            if (confirmacao) 
+            {
+                fetch(`/api/produtos/${id}`, 
+                {
                     method: "DELETE"
                 })
                 .then(response => response.json())
-                .then(data => {
+                .then(data => 
+                {
                     alert("Produto excluído com sucesso!");
-                    listarProdutos();  // Recarrega a lista de produtos
+                    listarProdutos();  // recarrega a lista de produtos
                 })
-                .catch(error => {
+                .catch(error => 
+                {
                     console.error("Erro ao excluir produto:", error);
                 });
             }
         }
 
-        // Carrega a lista de produtos ao carregar a página
+        // carrega a lista de produtos ao carregar a página
         window.onload = listarProdutos;
     </script>
 </body>

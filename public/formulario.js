@@ -1,7 +1,9 @@
-document.getElementById("formProduto").addEventListener("submit", function(event) {
+document.getElementById("formProduto").addEventListener("submit", function(event) 
+{
     event.preventDefault();  // Impede o envio padrão do formulário
 
-    const produtoData = {
+    const produtoData = 
+    {
         nome: document.getElementById("nome").value,
         preco: parseFloat(document.getElementById("preco").value),  // Certifique-se de enviar um número
         estoque: parseInt(document.getElementById("estoque").value)  // Certifique-se de enviar um número inteiro
@@ -9,64 +11,81 @@ document.getElementById("formProduto").addEventListener("submit", function(event
 
     console.log(produtoData);  // Verifique se os dados estão corretos antes de enviar
 
-    fetch("/api/produtos", {
+    fetch("/api/produtos", 
+    {
         method: "POST",
-        headers: {
+        headers: 
+        {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(produtoData)
     })
-    .then(response => {
-        if (!response.ok) {
+    .then(response => 
+    {
+        if (!response.ok) 
+        {
             throw new Error('Erro na requisição');
         }
         return response.json();
     })
-    .then(data => {
+    .then(data => 
+    {
         alert("Produto cadastrado com sucesso!");
     })
-    .catch(error => {
+    .catch(error => 
+    {
         console.error("Erro ao cadastrar produto:", error);
         alert("Erro ao cadastrar produto. Tente novamente.");
     });
 });
 
-// Envio do formulário de cadastro de usuário
+// envio do formulario de cadastro de usuario
 const formUsuario = document.getElementById("formUsuario");
 
-    if (formUsuario) {
-        formUsuario.addEventListener("submit", function(event) {
-            event.preventDefault();  // Impede o envio padrão do formulário
+    if (formUsuario) 
+    {
+        formUsuario.addEventListener("submit", function(event) 
+        {
+            event.preventDefault();  
 
-            const usuarioData = {
+            const usuarioData = 
+            {
                 nome: document.getElementById("nome").value,
                 email: document.getElementById("email").value,
                 senha: document.getElementById("senha").value
             };
 
-            console.log(usuarioData);  // Verifique se os dados estão corretos antes de enviar
+            console.log(usuarioData);  // verifique se os dados estão corretos antes de enviar
 
-            fetch("/api/usuarios", {
+            fetch("/api/usuarios", 
+            {
                 method: "POST",
-                headers: {
+                headers: 
+                {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(usuarioData)
             })
-            .then(response => {
-                if (!response.ok) {
+            .then(response => 
+            {
+                if (!response.ok) 
+                {
                     throw new Error('Erro na requisição');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(data => 
+            {
                 alert("Usuário cadastrado com sucesso!");
             })
-            .catch(error => {
+            .catch(error => 
+            {
                 console.error("Erro ao cadastrar usuário:", error);
                 alert("Erro ao cadastrar usuário. Tente novamente.");
             });
         });
-    } else {
+    } 
+    else 
+    {
         console.error("Formulário de usuário não encontrado. Verifique o ID.");
     }
