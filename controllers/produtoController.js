@@ -1,8 +1,8 @@
-const produtoModel = require('../models/produtoModel');  // Importando o produtoModel
+const produtoModel = require('../models/produtoModel');
 
-// Função para criar um novo produto
 function criarProduto(req, res) {
   const { nome, preco, estoque } = req.body;
+  console.log('Dados recebidos para cadastro de produto:', req.body);  // Log dos dados recebidos
 
   // Validação de tipo
   if (typeof preco !== 'number' || isNaN(preco)) {
@@ -26,11 +26,14 @@ function criarProduto(req, res) {
     return res.status(400).json({ message: 'O estoque deve ser um número inteiro maior ou igual a zero' });
   }
 
+  // Verificando a inserção do produto
   produtoModel.criarProduto(req.body, (err, produtoCriado) => {
     if (err) {
+      console.error('Erro ao criar produto:', err);  // Log de erro do produto
       return res.status(500).json({ message: 'Erro ao criar o produto' });
     }
 
+    console.log('Produto criado:', produtoCriado);  // Log do produto criado
     res.status(201).json(produtoCriado);  // Retorna o produto criado
   });
 }

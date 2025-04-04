@@ -16,13 +16,14 @@ document.getElementById("formProduto").addEventListener("submit", function(event
         },
         body: JSON.stringify(produtoData)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);  // Mensagem de erro ou sucesso do servidor
-        } else {
-            alert("Produto cadastrado com sucesso!");
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na requisição');
         }
+        return response.json();
+    })
+    .then(data => {
+        alert("Produto cadastrado com sucesso!");
     })
     .catch(error => {
         console.error("Erro ao cadastrar produto:", error);
@@ -32,9 +33,9 @@ document.getElementById("formProduto").addEventListener("submit", function(event
 
 // Envio do formulário de cadastro de usuário
 window.addEventListener('DOMContentLoaded', (event) => {
-    // Agora, o código será executado apenas depois que o DOM for totalmente carregado
     const formUsuario = document.getElementById("formUsuario");
-    
+
+    // Verifique se o formulário foi encontrado antes de adicionar o event listener
     if (formUsuario) {
         formUsuario.addEventListener("submit", function(event) {
             event.preventDefault();  // Impede o envio padrão do formulário
@@ -45,7 +46,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 senha: document.getElementById("senha").value
             };
 
-            console.log(usuarioData);  // Verifique se os dados estão corretos antes de enviar
+            console.log(usuarioData);  // Verifique os dados antes de enviar
 
             fetch("/api/usuarios", {
                 method: "POST",
@@ -68,6 +69,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
             });
         });
     } else {
-        console.error("Formulário não encontrado.");
+        console.error("Formulário não encontrado. Verifique o ID.");
     }
 });

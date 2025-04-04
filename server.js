@@ -22,12 +22,13 @@ app.use(express.json());
 // Serve arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
+const produtoRoutes = require('./routes/produtoRoutes');
 // Importando as rotas de usuários
 const usuarioRoutes = require('./routes/usuarioRoutes');  // Caminho correto para o arquivo usuarioRoutes.js
 
 // Usando a rota de usuários
-app.use('/api', usuarioRoutes);  // Prefixo '/api' para todas as rotas de usuários
-
+app.use('/api', usuarioRoutes);  // Isso está correto para as rotas de usuários
+app.use('/api', produtoRoutes);
 // Configuração para servir os arquivos HTML
 app.get('/cadastroProduto', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'cadastroProduto.html'));
