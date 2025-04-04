@@ -1,6 +1,6 @@
 Projeto feito por mim Daniel Almeida de Souza e por Miguel Hitoshi Takahashi
 
-Infelizmente o projeto não pôde ser concluido pois de última hora estava acontecendo diversos erros 
+Infelizmente o projeto não está 100% funcional pois de última hora estava acontecendo diversos erros 
 inesperados que não conseguimos resolver de nenhuma forma
 
 Em anexo o relatório técnico: 
