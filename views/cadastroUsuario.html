@@ -7,7 +7,8 @@
 </head>
 <body>
     <h1>Cadastrar Usuário</h1>
-    <form id="formUsuario"> <!-- O ID DO FORMULÁRIO DEVE SER 'formUsuario' -->
+
+    <form id="formUsuario">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required><br><br>
 
@@ -20,7 +21,7 @@
         <button type="submit">Cadastrar Usuário</button>
     </form>
 
-    <!-- Adicionando defer para garantir que o script só execute depois do HTML ser carregado -->
-    <script src="/formulario.js" defer></script>  <!-- AQUI O DEFER ESTÁ GARANTIDO -->
+    <!-- Inclua o script após o conteúdo do body, ou utilize o defer no script -->
+    <script src="/formularioUsuario.js" defer></script>
 </body>
 </html>

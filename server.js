@@ -23,20 +23,25 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Importando as rotas de usuários e produtos
-const usuarioRoutes = require('./routes/usuarioRoutes');  
 const produtoRoutes = require('./routes/produtoRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');  // Adicionando a importação das rotas de usuários
 
 // Usando as rotas
-app.use('/api', usuarioRoutes);
-app.use('/api', produtoRoutes);  // As rotas de produto também precisam ser usadas
+app.use('/api', produtoRoutes);  // As rotas de produtos
+app.use('/api', usuarioRoutes);  // As rotas de usuários
 
 // Servindo as páginas HTML
-app.get('/cadastroProduto', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'cadastroProduto.html'));
+app.get('/cadastroUsuario', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'cadastroUsuario.html'));
+}); 
+
+app.get('/listarUsuarios', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'listarUsuarios.html'));
 });
 
-app.get('/cadastroUsuario', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'cadastroUsuario.html'));
+
+app.get('/cadastroProduto', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'cadastroProduto.html'));
 });
 
 app.get('/listarProdutos', (req, res) => {

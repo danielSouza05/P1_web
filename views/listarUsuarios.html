@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+</head>
+<body>
+    <h1>Lista de Usuários</h1>
+
+    <!-- Tabela de usuários -->
+    <table id="tabelaUsuarios">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os usuários serão listados aqui via JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para listar todos os usuários
+        function listarUsuarios() {
+            fetch("/api/usuarios")
+                .then(response => response.json())
+                .then(usuarios => {
+                    const tabelaUsuarios = document.getElementById("tabelaUsuarios").getElementsByTagName('tbody')[0];
+                    tabelaUsuarios.innerHTML = '';  // Limpa a tabela antes de adicionar os usuários
+
+                    usuarios.forEach(usuario => {
+                        let row = tabelaUsuarios.insertRow();
+                        row.innerHTML = `
+                            <td>${usuario.id}</td>
+                            <td>${usuario.nome}</td>
+                            <td>${usuario.email}</td>
+                            <td>
+                                <button onclick="editarUsuario(${usuario.id})">Editar</button>
+                                <button onclick="excluirUsuario(${usuario.id})">Excluir</button>
+                            </td>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao listar usuários:", error);
+                });
+        }
+
+        // Função para editar um usuário
+        function editarUsuario(id) {
+            const novoNome = prompt("Digite o novo nome do usuário:");
+            const novoEmail = prompt("Digite o novo email do usuário:");
+            const novaSenha = prompt("Digite a nova senha do usuário:");
+
+            const usuarioEditado = { nome: novoNome, email: novoEmail, senha: novaSenha };
+
+            fetch(`/api/usuarios/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(usuarioEditado)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Usuário atualizado com sucesso!");
+                listarUsuarios();  // Atualiza a lista de usuários
+            })
+            .catch(error => {
+                console.error("Erro ao editar usuário:", error);
+            });
+        }
+
+        // Função para excluir um usuário
+        function excluirUsuario(id) {
+            const confirmacao = confirm("Tem certeza que deseja excluir este usuário?");
+            if (confirmacao) {
+                fetch(`/api/usuarios/${id}`, {
+                    method: "DELETE"
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Usuário excluído com sucesso!");
+                    listarUsuarios();  // Atualiza a lista de usuários
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir usuário:", error);
+                });
+            }
+        }
+
+        // Carrega a lista de usuários ao carregar a página
+        window.onload = listarUsuarios;
+    </script>
+</body>
+</html>

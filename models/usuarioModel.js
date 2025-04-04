@@ -1,10 +1,11 @@
 const db = require('./database');  // Conexão com o banco de dados
 
-// Função para criar um usuário no banco
+// Função para criar um novo usuário
 function criarUsuario(usuario, callback) {
   const query = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
   db.query(query, [usuario.nome, usuario.email, usuario.senha], (err, results) => {
     if (err) {
+      console.error('Erro ao criar o usuário:', err);
       return callback(err, null);
     }
     callback(null, { id: results.insertId, ...usuario });
@@ -22,7 +23,7 @@ function listarUsuarios(callback) {
   });
 }
 
-// Função para buscar um usuário pelo ID
+// Função para buscar um usuário por ID
 function buscarUsuarioPorId(id, callback) {
   const query = 'SELECT * FROM usuarios WHERE id = ?';
   db.query(query, [id], (err, results) => {
@@ -33,7 +34,7 @@ function buscarUsuarioPorId(id, callback) {
   });
 }
 
-// Função para atualizar os dados de um usuário
+// Função para atualizar um usuário
 function atualizarUsuario(id, usuario, callback) {
   const query = 'UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?';
   db.query(query, [usuario.nome, usuario.email, usuario.senha, id], (err, results) => {
@@ -49,9 +50,9 @@ function excluirUsuario(id, callback) {
   const query = 'DELETE FROM usuarios WHERE id = ?';
   db.query(query, [id], (err, results) => {
     if (err) {
-      return callback(err);
+      return callback(err, null);
     }
-    callback(null);
+    callback(null, results);
   });
 }
 

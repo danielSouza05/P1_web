@@ -1,27 +1,19 @@
-const usuarioModel = require('../models/usuarioModel');  // Importando o model de usuário
+const usuarioModel = require('../models/usuarioModel');
 
 // Função para criar um novo usuário
 function criarUsuario(req, res) {
   const { nome, email, senha } = req.body;
 
-  if (!nome || nome.length < 3) {
-    return res.status(400).json({ message: 'O nome do usuário deve ter pelo menos 3 caracteres' });
+  // Validação dos campos
+  if (!nome || !email || !senha) {
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
   }
 
-  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-  if (!email || !emailRegex.test(email)) {
-    return res.status(400).json({ message: 'Email inválido' });
-  }
-
-  if (!senha || senha.length < 6) {
-    return res.status(400).json({ message: 'A senha deve ter pelo menos 6 caracteres' });
-  }
-
-  usuarioModel.criarUsuario(req.body, (err, usuarioCriado) => {
+  usuarioModel.criarUsuario({ nome, email, senha }, (err, usuarioCriado) => {
     if (err) {
       return res.status(500).json({ message: 'Erro ao criar o usuário' });
     }
-    res.status(201).json(usuarioCriado);  // Retorna o usuário criado
+    res.status(201).json(usuarioCriado);
   });
 }
 
@@ -31,24 +23,21 @@ function listarUsuarios(req, res) {
     if (err) {
       return res.status(500).json({ message: 'Erro ao listar usuários' });
     }
-    res.status(200).json(usuarios);  // Retorna todos os usuários
+    res.status(200).json(usuarios);
   });
 }
 
-// Função para buscar um usuário específico pelo ID
+// Função para buscar um usuário por ID
 function buscarUsuarioPorId(req, res) {
   const { id } = req.params;
-
   usuarioModel.buscarUsuarioPorId(id, (err, usuario) => {
     if (err) {
       return res.status(500).json({ message: 'Erro ao buscar usuário' });
     }
-
     if (!usuario) {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
-
-    res.status(200).json(usuario);  // Retorna o usuário encontrado
+    res.status(200).json(usuario);
   });
 }
 
@@ -58,38 +47,26 @@ function atualizarUsuario(req, res) {
   const { nome, email, senha } = req.body;
 
   // Validação dos dados
-  if (!nome || nome.length < 3) {
-    return res.status(400).json({ message: 'O nome do usuário deve ter pelo menos 3 caracteres' });
+  if (!nome || !email || !senha) {
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
   }
 
-  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-  if (!email || !emailRegex.test(email)) {
-    return res.status(400).json({ message: 'Email inválido' });
-  }
-
-  if (!senha || senha.length < 6) {
-    return res.status(400).json({ message: 'A senha deve ter pelo menos 6 caracteres' });
-  }
-
-  usuarioModel.atualizarUsuario(id, req.body, (err, usuarioAtualizado) => {
+  usuarioModel.atualizarUsuario(id, { nome, email, senha }, (err, usuarioAtualizado) => {
     if (err) {
-      return res.status(500).json({ message: 'Erro ao atualizar o usuário' });
+      return res.status(500).json({ message: 'Erro ao atualizar usuário' });
     }
-
-    res.status(200).json(usuarioAtualizado);  // Retorna o usuário atualizado
+    res.status(200).json(usuarioAtualizado);
   });
 }
 
-// Função para excluir um usuário pelo ID
+// Função para excluir um usuário
 function excluirUsuario(req, res) {
   const { id } = req.params;
-
-  usuarioModel.excluirUsuario(id, (err) => {
+  usuarioModel.excluirUsuario(id, (err, resultado) => {
     if (err) {
-      return res.status(500).json({ message: 'Erro ao excluir o usuário' });
+      return res.status(500).json({ message: 'Erro ao excluir usuário' });
     }
-
-    res.status(204).send();  // Resposta sem corpo (204 No Content)
+    res.status(200).json({ message: 'Usuário excluído com sucesso' });
   });
 }
 
