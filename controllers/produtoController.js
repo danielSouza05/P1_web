@@ -60,10 +60,10 @@ function listarProdutos(req, res)
 }
 
 
-// vunção pra buscar produto pelo ID
+// funçao para buscar um produto por id
 function buscarProdutoPorId(req, res) 
 {
-  const { id } = req.params;  // pega o ID do produto a partir dos parametros da URL
+  const { id } = req.params;  // pega o id do produto a partir dos parametros da url
   produtoModel.buscarProdutoPorId(Number(id), (err, produto) => 
   {
     if (err) 
@@ -79,6 +79,7 @@ function buscarProdutoPorId(req, res)
     res.status(200).json(produto);  // retorna o produto encontrado
   });
 }
+
 
 // função pra alterar produto
 function alterarProduto(req, res) 

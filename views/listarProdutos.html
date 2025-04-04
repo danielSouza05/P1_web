@@ -8,103 +8,99 @@
 <body>
     <h1>Lista de Produtos</h1>
 
-    <table id="tabelaProdutos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Preço</th>
-                <th>Estoque</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!--os produtos serao listados aqui via js -->
-        </tbody>
-    </table>
+<!-- csmpo para buscar produto por id -->
+<label for="produtoId">Buscar Produto por ID:</label>
+<input type="number" id="produtoId" placeholder="Digite o ID do produto">
+<button onclick="buscarProdutoPorId()">Buscar</button>
 
-    <script>
-        // funçao pra listar os produtos
-        function listarProdutos() 
-        {
-            fetch("/api/produtos")
-                .then(response => response.json())
-                .then(produtos => 
-                {
-                    const tabelaProdutos = document.getElementById("tabelaProdutos").getElementsByTagName('tbody')[0];
-                    tabelaProdutos.innerHTML = ''; // limpa a tabela antes de adicionar os produtos
+<!-- tabela de produtos -->
+<table id="tabelaProdutos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- produtos serao listados aqui -->
+    </tbody>
+</table>
 
-                    produtos.forEach(produto => 
-                    {
-                        let row = tabelaProdutos.insertRow();
-                        row.innerHTML = `
-                            <td>${produto.id}</td>
-                            <td>${produto.nome}</td>
-                            <td>${produto.preco}</td>
-                            <td>${produto.estoque}</td>
-                            <td>
-                                <button onclick="editarProduto(${produto.id})">Editar</button>
-                                <button onclick="excluirProduto(${produto.id})">Excluir</button>
-                            </td>
-                        `;
-                    });
-                })
-                .catch(error => 
-                {
-                    console.error("Erro ao listar produtos:", error);
-                });
-        }
-
-        // função para editar um produto
-        function editarProduto(id) {
-            const novoNome = prompt("Digite o novo nome do produto:");
-            const novoPreco = parseFloat(prompt("Digite o novo preço do produto:"));
-            const novoEstoque = parseInt(prompt("Digite o novo estoque do produto:"));
-
-            const produtoEditado = { nome: novoNome, preco: novoPreco, estoque: novoEstoque };
-
-            fetch(`/api/produtos/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(produtoEditado)
-            })
+<script>
+    // funçao para listar todos os produtos
+    function listarProdutos() 
+    {
+        fetch("/api/produtos")
             .then(response => response.json())
-            .then(data => {
-                alert("Produto atualizado com sucesso!");
-                listarProdutos();  // recarrega a lista de produtos
-            })
-            .catch(error => {
-                console.error("Erro ao editar produto:", error);
-            });
-        }
-
-        // funçao pra excluir um produto
-        function excluirProduto(id) 
-        {
-            const confirmacao = confirm("Tem certeza que deseja excluir este produto?");
-            if (confirmacao) 
+            .then(produtos => 
             {
-                fetch(`/api/produtos/${id}`, 
+                const tabelaProdutos = document.getElementById("tabelaProdutos").getElementsByTagName('tbody')[0];
+                tabelaProdutos.innerHTML = ''; // limpa a tabela antes de adicionar os produtos
+
+                produtos.forEach(produto => 
                 {
-                    method: "DELETE"
-                })
-                .then(response => response.json())
-                .then(data => 
-                {
-                    alert("Produto excluído com sucesso!");
-                    listarProdutos();  // recarrega a lista de produtos
-                })
-                .catch(error => 
-                {
-                    console.error("Erro ao excluir produto:", error);
+                    let row = tabelaProdutos.insertRow();
+                    row.innerHTML = `
+                        <td>${produto.id}</td>
+                        <td>${produto.nome}</td>
+                        <td>${produto.preco}</td>
+                        <td>${produto.estoque}</td>
+                        <td>
+                            <button onclick="editarProduto(${produto.id})">Editar</button>
+                            <button onclick="excluirProduto(${produto.id})">Excluir</button>
+                        </td>
+                    `;
                 });
-            }
+            })
+            .catch(error => 
+            {
+                console.error("Erro ao listar produtos:", error);
+            });
+    }
+
+    // função para buscar produto por id
+    function buscarProdutoPorId() 
+    {
+        const id = document.getElementById("produtoId").value;
+
+        if (!id) 
+        {
+            alert("Por favor, insira um ID de produto.");
+            return;
         }
 
-        // carrega a lista de produtos ao carregar a página
-        window.onload = listarProdutos;
-    </script>
+        fetch(`/api/produtos/${id}`)
+            .then(response => response.json())
+            .then(produto => {
+                const tabelaProdutos = document.getElementById("tabelaProdutos").getElementsByTagName('tbody')[0];
+                tabelaProdutos.innerHTML = '';  // limpa a tabela
+
+                // exibe o produto encontrado
+                const row = tabelaProdutos.insertRow();
+                row.innerHTML = `
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.preco}</td>
+                    <td>${produto.estoque}</td>
+                    <td>
+                        <button onclick="editarProduto(${produto.id})">Editar</button>
+                        <button onclick="excluirProduto(${produto.id})">Excluir</button>
+                    </td>
+                `;
+            })
+            .catch(error => 
+            {
+                console.error("Erro ao buscar produto:", error);
+                alert("Produto não encontrado.");
+            });
+    }
+
+    // carrega a lista de produtos ao carregar a página
+    window.onload = listarProdutos;
+</script>
+
 </body>
 </html>

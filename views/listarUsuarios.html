@@ -8,107 +8,96 @@
 <body>
     <h1>Lista de Usuários</h1>
 
-    <!-- tabela de usuarios -->
-    <table id="tabelaUsuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- os usuarios serão listados aqui via js -->
-        </tbody>
-    </table>
+<!-- campo para buscar usuario por id -->
+<label for="usuarioId">Buscar Usuário por ID:</label>
+<input type="number" id="usuarioId" placeholder="Digite o ID do usuário">
+<button onclick="buscarUsuarioPorId()">Buscar</button>
 
-    <script>
-        // funçao para listar todos os usuarios
-        function listarUsuarios() 
-        {
-            fetch("/api/usuarios")
-                .then(response => response.json())
-                .then(usuarios => 
-                {
-                    const tabelaUsuarios = document.getElementById("tabelaUsuarios").getElementsByTagName('tbody')[0];
-                    tabelaUsuarios.innerHTML = '';  // limpa a tabela antes de adicionar os usuarios
+<!-- tabela de usuarios -->
+<table id="tabelaUsuarios">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- usuarios serao listados aqui -->
+    </tbody>
+</table>
 
-                    usuarios.forEach(usuario => 
-                    {
-                        let row = tabelaUsuarios.insertRow();
-                        row.innerHTML = `
-                            <td>${usuario.id}</td>
-                            <td>${usuario.nome}</td>
-                            <td>${usuario.email}</td>
-                            <td>
-                                <button onclick="editarUsuario(${usuario.id})">Editar</button>
-                                <button onclick="excluirUsuario(${usuario.id})">Excluir</button>
-                            </td>
-                        `;
-                    });
-                })
-                .catch(error => 
-                {
-                    console.error("Erro ao listar usuários:", error);
-                });
-        }
-
-        // funçao para editar um usuario
-        function editarUsuario(id) 
-        {
-            const novoNome = prompt("Digite o novo nome do usuário:");
-            const novoEmail = prompt("Digite o novo email do usuário:");
-            const novaSenha = prompt("Digite a nova senha do usuário:");
-
-            const usuarioEditado = { nome: novoNome, email: novoEmail, senha: novaSenha };
-
-            fetch(`/api/usuarios/${id}`, 
-            {
-                method: "PUT",
-                headers: 
-                {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(usuarioEditado)
-            })
+<script>
+    // dunçao para listar todos os usuarios
+    function listarUsuarios() 
+    {
+        fetch("/api/usuarios")
             .then(response => response.json())
-            .then(data => 
-            {
-                alert("Usuário atualizado com sucesso!");
-                listarUsuarios();  // atualiza a lista de usuarios
+            .then(usuarios => {
+                const tabelaUsuarios = document.getElementById("tabelaUsuarios").getElementsByTagName('tbody')[0];
+                tabelaUsuarios.innerHTML = ''; // limpa a tabela antes de adicionar os usuarios
+
+                usuarios.forEach(usuario => 
+                {
+                    let row = tabelaUsuarios.insertRow();
+                    row.innerHTML = `
+                        <td>${usuario.id}</td>
+                        <td>${usuario.nome}</td>
+                        <td>${usuario.email}</td>
+                        <td>
+                            <button onclick="editarUsuario(${usuario.id})">Editar</button>
+                            <button onclick="excluirUsuario(${usuario.id})">Excluir</button>
+                        </td>
+                    `;
+                });
             })
             .catch(error => 
             {
-                console.error("Erro ao editar usuário:", error);
+                console.error("Erro ao listar usuários:", error);
             });
-        }
+    }
 
-        // função para excluir um usurio
-        function excluirUsuario(id) 
+    // funçao para buscar usuario por id
+    function buscarUsuarioPorId() 
+    {
+        const id = document.getElementById("usuarioId").value;
+
+        if (!id) 
         {
-            const confirmacao = confirm("Tem certeza que deseja excluir este usuário?");
-            if (confirmacao) 
-            {
-                fetch(`/api/usuarios/${id}`, 
-                {
-                    method: "DELETE"
-                })
-                .then(response => response.json())
-                .then(data => 
-                {
-                    alert("Usuário excluído com sucesso!");
-                    listarUsuarios();  // atualiza a lista de usuarios
-                })
-                .catch(error => 
-                {
-                    console.error("Erro ao excluir usuário:", error);
-                });
-            }
+            alert("Por favor, insira um ID de usuário.");
+            return;
         }
 
-        // carrega a lista de usuarios ao carregar a pagina
-        window.onload = listarUsuarios;
-    </script>
+        fetch(`/api/usuarios/${id}`)
+            .then(response => response.json())
+            .then(usuario => 
+            {
+                const tabelaUsuarios = document.getElementById("tabelaUsuarios").getElementsByTagName('tbody')[0];
+                tabelaUsuarios.innerHTML = '';  // limpa a tabela
+
+                // exibe o usuario encontrado
+                const row = tabelaUsuarios.insertRow();
+                row.innerHTML = `
+                    <td>${usuario.id}</td>
+                    <td>${usuario.nome}</td>
+                    <td>${usuario.email}</td>
+                    <td>
+                        <button onclick="editarUsuario(${usuario.id})">Editar</button>
+                        <button onclick="excluirUsuario(${usuario.id})">Excluir</button>
+                    </td>
+                `;
+            })
+            .catch(error => 
+            {
+                console.error("Erro ao buscar usuário:", error);
+                alert("Usuário não encontrado.");
+            });
+    }
+
+    // carrega a lista de usuarios ao carregar a pagina
+    window.onload = listarUsuarios;
+</script>
+
 </body>
 </html>

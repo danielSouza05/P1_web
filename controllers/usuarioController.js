@@ -37,18 +37,20 @@ function listarUsuarios(req, res)
 // fnção pra buscar um usuario pelo id
 function buscarUsuarioPorId(req, res) 
 {
-  const { id } = req.params;
-  usuarioModel.buscarUsuarioPorId(id, (err, usuario) => 
+  const { id } = req.params;  // pega o id do usuario a partir dos parametros da url
+  usuarioModel.buscarUsuarioPorId(Number(id), (err, usuario) => 
   {
     if (err) 
     {
       return res.status(500).json({ message: 'Erro ao buscar usuário' });
     }
+
     if (!usuario) 
     {
-      return res.status(404).json({ message: 'Usuário não encontrado' });
+      return res.status(404).json({ message: 'Usuário não encontrado!' });
     }
-    res.status(200).json(usuario);
+
+    res.status(200).json(usuario);  // retorna o usuario encontrado
   });
 }
 
