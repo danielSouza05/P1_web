@@ -22,24 +22,30 @@ app.use(express.json());
 // Serve arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Importando as rotas de usuários e produtos
+const usuarioRoutes = require('./routes/usuarioRoutes');  
 const produtoRoutes = require('./routes/produtoRoutes');
-// Importando as rotas de usuários
-const usuarioRoutes = require('./routes/usuarioRoutes');  // Caminho correto para o arquivo usuarioRoutes.js
 
-// Usando a rota de usuários
-app.use('/api', usuarioRoutes);  // Isso está correto para as rotas de usuários
-app.use('/api', produtoRoutes);
-// Configuração para servir os arquivos HTML
+// Usando as rotas
+app.use('/api', usuarioRoutes);
+app.use('/api', produtoRoutes);  // As rotas de produto também precisam ser usadas
+
+// Servindo as páginas HTML
 app.get('/cadastroProduto', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'cadastroProduto.html'));
 });
 
 app.get('/cadastroUsuario', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'cadastroUsuario.html'));
+    res.sendFile(path.join(__dirname, 'views', 'cadastroUsuario.html'));
 });
 
-// Configuração para iniciar o servidor
+app.get('/listarProdutos', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'listarProdutos.html'));
+});
+
+// Iniciando o servidor
 const port = 3000;
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+    console.log(`Servidor rodando na porta ${port}`);
 });
+

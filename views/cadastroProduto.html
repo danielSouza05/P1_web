@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Produto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Produto</title>
 </head>
 <body>
-  <h1>Cadastrar Produto</h1>
-  <form id="formProduto">
-    <label for="nome">Nome do Produto:</label>
-    <input type="text" id="nome" name="nome" required><br><br>
+    <h1>Cadastrar Produto</h1>
 
-    <label for="preco">Preço:</label>
-    <input type="number" id="preco" name="preco" required><br><br>
+    <form id="formProduto">
+        <label for="nome">Nome do Produto:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
 
-    <label for="estoque">Estoque:</label>
-    <input type="number" id="estoque" name="estoque" required><br><br>
+        <label for="preco">Preço:</label>
+        <input type="number" id="preco" name="preco" required><br><br>
 
-    <button type="submit">Cadastrar Produto</button>
-  </form>
+        <label for="estoque">Estoque:</label>
+        <input type="number" id="estoque" name="estoque" required><br><br>
 
-  <script src="/formulario.js"></script>  <!-- Corrigido para carregar o arquivo correto -->
+        <button type="submit">Cadastrar Produto</button>
+    </form>
+
+    <script>
+        document.getElementById("formProduto").addEventListener("submit", function(event) {
+            event.preventDefault();  // Impede o envio padrão do formulário
+
+            const produtoData = {
+                nome: document.getElementById("nome").value,
+                preco: parseFloat(document.getElementById("preco").value),
+                estoque: parseInt(document.getElementById("estoque").value)
+            };
+
+            fetch("/api/produtos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(produtoData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Produto cadastrado com sucesso!");
+            })
+            .catch(error => {
+                console.error("Erro ao cadastrar produto:", error);
+                alert("Erro ao cadastrar produto. Tente novamente.");
+            });
+        });
+    </script>
 </body>
 </html>
